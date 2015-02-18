@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapReduce.Api", "MapReduce.Api\MapReduce.Api.csproj", "{236162D2-77A8-46C8-A2DC-356B6FBB16B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapReduce.DataAccess", "MapReduce.DataAccess\MapReduce.DataAccess.csproj", "{3CCEA73D-40DB-4077-85EC-1647D72917A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debuger", "Debuger\Debuger.csproj", "{D90F9396-A520-453A-81B2-E8B9A2C060F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapReduce.Serialization", "MapReduce.Serialization\MapReduce.Serialization.csproj", "{42440557-BCB4-4BD0-91E3-4825356A4512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapReduce.Core", "MapReduce.Core\MapReduce.Core.csproj", "{A9680732-28C7-463F-B61E-A808E2A9B96C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{236162D2-77A8-46C8-A2DC-356B6FBB16B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{236162D2-77A8-46C8-A2DC-356B6FBB16B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{236162D2-77A8-46C8-A2DC-356B6FBB16B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{236162D2-77A8-46C8-A2DC-356B6FBB16B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CCEA73D-40DB-4077-85EC-1647D72917A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CCEA73D-40DB-4077-85EC-1647D72917A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CCEA73D-40DB-4077-85EC-1647D72917A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CCEA73D-40DB-4077-85EC-1647D72917A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D90F9396-A520-453A-81B2-E8B9A2C060F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D90F9396-A520-453A-81B2-E8B9A2C060F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D90F9396-A520-453A-81B2-E8B9A2C060F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D90F9396-A520-453A-81B2-E8B9A2C060F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42440557-BCB4-4BD0-91E3-4825356A4512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42440557-BCB4-4BD0-91E3-4825356A4512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42440557-BCB4-4BD0-91E3-4825356A4512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42440557-BCB4-4BD0-91E3-4825356A4512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9680732-28C7-463F-B61E-A808E2A9B96C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9680732-28C7-463F-B61E-A808E2A9B96C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9680732-28C7-463F-B61E-A808E2A9B96C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9680732-28C7-463F-B61E-A808E2A9B96C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
