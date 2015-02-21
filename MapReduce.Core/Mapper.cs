@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MapReduce.Api;
+using StackExchange.Redis;
 
 namespace MapReduce.Core
 {
@@ -31,6 +32,10 @@ namespace MapReduce.Core
         public void ReadAndMap(Stream stream)
         {
             Parallel.ForEach(mapReduce.Read(stream), o => mapReduce.DoMap(o, AddData));
+        }
+        public void ReadAndMap(Stream stream, BinaryCollector externalCollector)
+        {
+            Parallel.ForEach(mapReduce.Read(stream), o => mapReduce.DoMap(o, externalCollector));
         }
     }
 }

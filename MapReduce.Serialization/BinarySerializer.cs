@@ -33,7 +33,7 @@ namespace MapReduce.Serialization
     {
         public override T DeserializeOne(Stream source)
         {
-            return Serializer.Deserialize<T>(source);
+            return Serializer.DeserializeWithLengthPrefix<T>(source, PrefixStyle.Fixed32);
         }
 
         public override IEnumerable<T> Deserialize(Stream source)
@@ -43,7 +43,7 @@ namespace MapReduce.Serialization
 
         public override void SerializeOne(Stream destination, T instance)
         {
-            Serializer.Serialize(destination, instance);
+            Serializer.SerializeWithLengthPrefix(destination, instance, PrefixStyle.Fixed32);
         }
 
         public override void Serialize(Stream destination, IEnumerable<T> instances)

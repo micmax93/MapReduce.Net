@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="IMapReduce.cs" />
     <Compile Include="ISerialization.cs" />
+    <Compile Include="MapReduce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

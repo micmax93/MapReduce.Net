@@ -9,7 +9,7 @@ using MapReduce.Api;
 
 namespace MapReduce.Core
 {
-    class Reducer
+    public class Reducer
     {
         private IMapReduce mapReduce;
         public Reducer(IMapReduce implementation)
@@ -17,7 +17,7 @@ namespace MapReduce.Core
             mapReduce = implementation;
         }
 
-        public object Reduce(byte[] key, IEnumerable<byte[]> values)
+        public byte[] Reduce(byte[] key, IEnumerable<byte[]> values)
         {
             return mapReduce.DoReduce(key, values);
         }

@@ -11,7 +11,7 @@ namespace MapReduce.Serialization
     {
         public void Serialize(Stream destination, IEnumerable<T> instances)
         {
-            StreamWriter writer = new StreamWriter(destination);
+            StreamWriter writer = new StreamWriter(destination) {AutoFlush = true};
             foreach (var instance in instances)
             {
                 writer.WriteLine(instance.ToString());
@@ -28,7 +28,7 @@ namespace MapReduce.Serialization
     {
         public void Serialize(Stream destination, IEnumerable<T[]> instances)
         {
-            StreamWriter writer = new StreamWriter(destination);
+            StreamWriter writer = new StreamWriter(destination) { AutoFlush = true };
             foreach (var entry in instances)
             {
                 writer.WriteLine(String.Join(";", entry));
