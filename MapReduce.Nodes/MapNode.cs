@@ -15,11 +15,20 @@ namespace MapReduce.Nodes
 {
     public class MapNode: Node
     {
-        private RedisDb db;
 
         public void MapDone(string id)
         {
-            
+            db.Publish("mapper", id);
+        }
+
+        public override void OnStart()
+        {
+            db.Subscribe("new_map", (ch,val) => Signal());
+        }
+
+        public override void OnStop()
+        {
+            db.Unsubscribe("new_map");
         }
 
         public override bool TryExecuteTask()

@@ -15,11 +15,20 @@ namespace MapReduce.Nodes
 {
     public class ReduceNode : Node
     {
-        private RedisDb db;
 
         public void ReduceDone(string id)
         {
+            db.Publish("reducer", id);
+        }
 
+        public override void OnStart()
+        {
+            db.Subscribe("new_reduce", (ch, val) => Signal());
+        }
+
+        public override void OnStop()
+        {
+            db.Unsubscribe("new_reduce");
         }
 
         public override bool TryExecuteTask()
@@ -29,7 +38,7 @@ namespace MapReduce.Nodes
             var task = db.GetReduceTask();
             IMapReduce mapReduce = db.LoadAssembly();
             Reducer reducer = new Reducer(mapReduce);
-            var result = reducer.Reduce(task.Key, task.Value.Cast<byte[]>());
+            var result = reducer.Reduce(task.Key, task.Value);
             db.FinishReduceTask(result, ReduceDone);
             return true;
         }
