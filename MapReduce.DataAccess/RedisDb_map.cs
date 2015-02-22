@@ -10,10 +10,11 @@ namespace MapReduce.DataAccess
 {
     public partial class RedisDb
     {
-        public void CreateMapTasks(string id, string[] tasks)
+        public void CreateMapTasks(string id, IEnumerable<string> tasks)
         {
-            db.ListRightPush("map_" + id, tasks.Cast<RedisValue>().ToArray());
-            db.HashSet("counters", "map_" + id, tasks.Length);
+            var arr = tasks.Cast<RedisValue>().ToArray();
+            db.ListRightPush("map_" + id, arr);
+            db.HashSet("counters", "map_" + id, arr.Length);
             db.ListRightPush("map", id);
         }
 
@@ -25,6 +26,7 @@ namespace MapReduce.DataAccess
             if (!task.HasValue) return false;
             JobId = id;
             CurrentTask = task;
+            JobStatus = "map";
             return true;
         }
 

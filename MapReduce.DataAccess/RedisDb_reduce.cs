@@ -23,6 +23,7 @@ namespace MapReduce.DataAccess
             if (!task.HasValue) return false;
             JobId = id;
             CurrentTask = task;
+            JobStatus = "reduce";
             return true;
         }
 

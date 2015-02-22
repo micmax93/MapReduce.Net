@@ -15,6 +15,9 @@ namespace MapReduce.Nodes
 {
     public class MapNode: Node
     {
+        public MapNode(string nodeName) : base(nodeName)
+        {
+        }
 
         public void MapDone(string id)
         {

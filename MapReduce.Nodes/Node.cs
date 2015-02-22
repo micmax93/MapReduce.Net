@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,11 @@ namespace MapReduce.Nodes
         protected RedisDb db;
         private object _lock = new object();
         private bool _active = true;
+        public Node(string nodeName)
+        {
+            var host = ConfigurationManager.ConnectionStrings["redisDb"].ConnectionString;
+            db = new RedisDb(host, nodeName);
+        }
         public bool Active
         {
             get { return _active; }

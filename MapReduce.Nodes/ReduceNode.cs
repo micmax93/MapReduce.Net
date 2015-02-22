@@ -15,14 +15,19 @@ namespace MapReduce.Nodes
 {
     public class ReduceNode : Node
     {
+        public ReduceNode(string nodeName) : base(nodeName)
+        {
+        }
 
         public void ReduceDone(string id)
         {
             db.CloseReduce(id);
+            db.JobStatus = "saving";
             string path = db.JobOutFile;
             FileStream fs = new FileStream(path, FileMode.Create);
             var data = db.GetOutData(id);
             new Reducer(db.LoadAssembly()).Write(fs, data);
+            db.JobId = "done";
         }
 
         public override void OnStart()

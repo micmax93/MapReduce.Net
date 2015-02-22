@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,7 @@ namespace MapReduce.DataAccess
             get { return (string)HashGet("node_" + node, "id"); }
             set { HashSet("node_" + node, "id", value); }
         }
+
         public byte[] CurrentTask
         {
             get { return (byte[])HashGet("node_" + node, "task"); }
@@ -33,6 +35,22 @@ namespace MapReduce.DataAccess
                 string id = JobId;
                 if (id == null) return;
                 HashSet("job_" + id, "assembly", value);
+            }
+        }
+
+        public string JobStatus
+        {
+            get
+            {
+                string id = JobId;
+                if (id == null) return null;
+                return (string)HashGet("job_" + id, "status");
+            }
+            set
+            {
+                string id = JobId;
+                if (id == null) return;
+                HashSet("job_" + id, "status", value);
             }
         }
 
@@ -65,11 +83,29 @@ namespace MapReduce.DataAccess
             }
         }
 
-        public void CreateJob(string id, string assemblyFile, string outPath)
+        public string CreateJob(string user, string jobName, string assemblyFile, string outPath)
         {
-            JobId = id;
-            JobAssembly = assemblyFile;
-            JobOutFile = outPath;
+            string id = user + "_" + jobName;
+            HashSet("job_" + id, "status", "new");
+            HashSet("job_" + id, "assembly", assemblyFile);
+            HashSet("job_" + id, "outfile", outPath);
+            return id;
+        }
+
+        public void RemoveJob(string id)
+        {
+            db.KeyDelete("job_" + id);
+        }
+
+        public IEnumerable<string> ListJobs(string user)
+        {
+            return server.Keys(pattern: "job_" + user + "_*").Cast<string>();
+        }
+
+        public string GetJobStatus(string id)
+        {
+            return (string) HashGet("job_" + id, "status");
+
         }
     }
 }
