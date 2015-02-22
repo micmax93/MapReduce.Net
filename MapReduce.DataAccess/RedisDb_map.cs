@@ -53,5 +53,16 @@ namespace MapReduce.DataAccess
                 trigger(id);
             }
         }
+
+        public void CloseMap(string id)
+        {
+            HashSet("counters", "map_" + id, null);
+            if (db.ListGetByIndex("map", 0) == id)
+            {
+                string _id = db.ListLeftPop("map");
+                if (_id != id) db.ListLeftPush("map", _id);
+            }
+            db.KeyDelete("map_" + id);
+        }
     }
 }

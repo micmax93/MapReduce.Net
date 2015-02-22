@@ -18,7 +18,9 @@ namespace MapReduce.Nodes
 
         public void MapDone(string id)
         {
-            db.Publish("mapper", id);
+            db.CloseMap(id);
+            db.CreateReduceTasks(id);
+            db.Publish("new_reduce", id);
         }
 
         public override void OnStart()

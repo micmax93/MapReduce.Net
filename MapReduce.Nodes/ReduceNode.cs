@@ -18,7 +18,11 @@ namespace MapReduce.Nodes
 
         public void ReduceDone(string id)
         {
-            db.Publish("reducer", id);
+            db.CloseReduce(id);
+            string path = db.JobOutFile;
+            FileStream fs = new FileStream(path, FileMode.Create);
+            var data = db.GetOutData(id);
+            new Reducer(db.LoadAssembly()).Write(fs, data);
         }
 
         public override void OnStart()

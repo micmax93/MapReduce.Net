@@ -48,5 +48,21 @@ namespace MapReduce.DataAccess
                 trigger(id);
             }
         }
+
+        public IEnumerable<byte[]> GetOutData(string id)
+        {
+            return db.ListRange("out_" + id).Cast<byte[]>();
+        }
+
+        public void CloseReduce(string id)
+        {
+            HashSet("counters", "reduce_" + id, null);
+            if (db.ListGetByIndex("reduce", 0) == id)
+            {
+                string _id = db.ListLeftPop("reduce");
+                if (_id != id) db.ListLeftPush("reduce", _id);
+            }
+            db.KeyDelete("reduce_" + id);
+        }
     }
 }
