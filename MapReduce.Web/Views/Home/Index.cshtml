@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>MapReduce.Net</title>
+    <script src="https://code.angularjs.org/1.2.16/angular.js"></script>
+    <script src="https://code.angularjs.org/1.2.16/angular-route.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+         .logo {
+             font-family: 'Audiowide', cursive;
+             font-size: 500%;
+             border: 5px outset black;
+         }
+    </style>
+
+    <script>
+        var app = angular.module('MyApp', []);
+        app.controller('Root', rootController);
+
+        function rootController($scope, $http) {
+            $scope.reqFields = ['JobName', 'InPath', 'OutFile', 'DllPath'];
+            $scope.req = {};
+            $scope.submit = function () {
+                $http.post('/api/job/', $scope.req).success(
+                    function (response) {
+                        alert(response['JobId'] + ": " + response['Status']);
+                    }
+                );
+            };
+            $scope.list = null;
+            $scope.update = function () {
+                $http.get('/api/job/', $scope.req).success(
+                    function (response) {
+                        $scope.list = response;
+                        $scope.$apply();
+                    }
+                );
+            };
+            $scope.remove = function (id) {
+                $http.delete('/api/job/' + id).success(
+                    function () {
+                        $scope.update();
+                    }
+                );
+            };
+            $scope.update();
+        }
+    </script>
+
+</head>
+<body>
+    <div style="text-align: center; margin: 10px">
+        <span class="logo">MapReduce.Net</span>
+    </div>
+
+    <div ng-app='MyApp'>
+        <div ng-controller='Root' style="text-align: center">
+
+            <div style="display: inline-block; text-align: left">
+                Submit new job:
+                <table style="border: none">
+                    <tr ng-repeat="field in reqFields">
+                        <td style="padding-right: 10px">{{field}}</td>
+                        <td>
+                            <input type="text" name="{{field}}" ng-model="req[field]" style="width: 400px" />
+                        </td>
+                    </tr>
+                </table>
+                <button ng-click="submit()">Submit</button>
+            </div>
+            <br/>
+            <div style="display: inline-block; text-align: center; vertical-align: top;margin-top: 30px">
+                Jobs list: <button ng-click="update()">Update</button>
+                <div ng-if="list.length==0">No jobs :(</div>
+                <table border="1" style="border: 1px solid grey;" ng-if="(list!=null)&&(list.length>0)">
+                    <tr><td>JobId</td><td>Status</td><td></td></tr>
+                    <tr ng-repeat="job in list">
+                        <td style="padding-right: 20px">{{job.JobId}}</td>
+                        <td style="padding-right: 20px; text-align: center">{{job.Status}}</td>
+                        <td><button ng-click="remove(job.JobId)">Remove</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

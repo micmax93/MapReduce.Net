@@ -108,7 +108,6 @@ namespace MapReduce.DataAccess
         public string GetJobStatus(string id)
         {
             return HashGet("job_" + id, "status");
-
         }
     }
 }

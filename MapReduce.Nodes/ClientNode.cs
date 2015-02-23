@@ -33,7 +33,6 @@ namespace MapReduce.Nodes
         {
             string id = db.CreateJob(user, jobName, assemblyFile, outputFile);
             db.CreateMapTasks(id, inputFiles);
-            db.Publish("new_map", id);
             return id;
         }
 

@@ -29,7 +29,7 @@ namespace MapReduce.Nodes
             new Reducer(db.LoadAssembly()).Write(fs, data);
             fs.Close();
             db.CloseOutData(id);
-            db.JobId = "done";
+            db.JobStatus = "done";
         }
 
         public override void OnStart()

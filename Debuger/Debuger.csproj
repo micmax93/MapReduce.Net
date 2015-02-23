@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB3D3889-DFA6-4898-AE86-45CE24E91DC0}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{D90F9396-A520-453A-81B2-E8B9A2C060F9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WordCount</RootNamespace>
-    <AssemblyName>WordCount</AssemblyName>
+    <RootNamespace>Debuger</RootNamespace>
+    <AssemblyName>Debuger</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,9 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="protobuf-net">
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\StackExchange.Redis.1.0.394\lib\net45\StackExchange.Redis.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,24 +50,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WCTest.cs" />
-    <Compile Include="WordCount.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MapReduce.Api\MapReduce.Api.csproj">
       <Project>{236162d2-77a8-46c8-a2dc-356b6fbb16b5}</Project>
       <Name>MapReduce.Api</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
+    <ProjectReference Include="..\MapReduce.Core\MapReduce.Core.csproj">
+      <Project>{a9680732-28c7-463f-b61e-a808e2a9b96c}</Project>
+      <Name>MapReduce.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapReduce.DataAccess\MapReduce.DataAccess.csproj">
+      <Project>{3ccea73d-40db-4077-85ec-1647d72917a4}</Project>
+      <Name>MapReduce.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapReduce.Nodes\MapReduce.Nodes.csproj">
+      <Project>{5C91557F-DE71-4FFC-8F11-439786D3400F}</Project>
+      <Name>MapReduce.Nodes</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapReduce.Serialization\MapReduce.Serialization.csproj">
       <Project>{42440557-bcb4-4bd0-91e3-4825356a4512}</Project>
       <Name>MapReduce.Serialization</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

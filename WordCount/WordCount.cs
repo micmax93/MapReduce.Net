@@ -9,10 +9,12 @@ using ProtoBuf;
 
 namespace WordCount
 {
-    [Serializable]
+    [ProtoContract]
     public class Counter
     {
+        [ProtoMember(1)]
         public string Word;
+        [ProtoMember(2)]
         public int Count;
 
         public override string ToString()
@@ -20,7 +22,7 @@ namespace WordCount
             return Word + " = " + Count;
         }
     }
-    public class WcMapReduce : MapReduce<string, string, int, KeyValuePair<string, int>>
+    public class WcMapReduce : MapReduce<string, string, int, Counter>
     {
         
         public override void Map(string input, ObjectCollector<string, int> objectCollector)
@@ -31,15 +33,15 @@ namespace WordCount
             }
         }
 
-        public override KeyValuePair<string, int> Reduce(string key, IEnumerable<int> values)
+        public override Counter Reduce(string key, IEnumerable<int> values)
         {
             int sum = values.Sum();
-            return new KeyValuePair<string, int>(key, sum);
+            return new Counter() {Word = key, Count = sum};
         }
 
-        public override IEnumerable<KeyValuePair<string, int>> SortOutput(IEnumerable<KeyValuePair<string, int>> results)
+        public override IEnumerable<Counter> SortOutput(IEnumerable<Counter> results)
         {
-            return results.OrderBy(r => r.Key);
+            return results.OrderBy(c => c.Word);
         }
 
         public override IObjectReader<string> GetInReader()
@@ -57,14 +59,14 @@ namespace WordCount
             return new ProtoBufSerializer<int>();
         }
 
-        public override IObjectSerializer<KeyValuePair<string, int>> GetOutSerializer()
+        public override IObjectSerializer<Counter> GetOutSerializer()
         {
-            return new DefaultSerializer<KeyValuePair<string, int>>();
+            return new ProtoBufSerializer<Counter>();
         }
 
-        public override IObjectWriter<KeyValuePair<string, int>> GetOutWriter()
+        public override IObjectWriter<Counter> GetOutWriter()
         {
-            return new KeyValueWriter<string, int>();
+            return new TextLineWriter<Counter>();
         }
     }
 }

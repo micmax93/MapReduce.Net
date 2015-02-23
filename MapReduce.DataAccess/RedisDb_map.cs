@@ -16,6 +16,7 @@ namespace MapReduce.DataAccess
             db.ListRightPush("map_" + id, arr);
             db.HashSet("counters", "map_" + id, arr.Length);
             db.ListRightPush("map", id);
+            db.Publish("new_map", id);
         }
 
         public bool AssignMapTask()
@@ -65,6 +66,9 @@ namespace MapReduce.DataAccess
                 if (_id != id) db.ListLeftPush("map", _id);
             }
             db.KeyDelete("map_" + id);
+
+            var next = db.ListGetByIndex("map", 0);
+            if (next.HasValue) db.Publish("new_map", (string)next);
         }
     }
 }
