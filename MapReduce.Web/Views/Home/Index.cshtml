@@ -12,11 +12,12 @@
         table {
             border-collapse: collapse;
         }
-         .logo {
-             font-family: 'Audiowide', cursive;
-             font-size: 500%;
-             border: 5px outset black;
-         }
+
+        .logo {
+            font-family: 'Audiowide', cursive;
+            font-size: 500%;
+            border: 5px outset black;
+        }
     </style>
 
     <script>
@@ -64,17 +65,19 @@
 
             <div style="display: inline-block; text-align: left">
                 Submit new job:
-                <table style="border: none">
-                    <tr ng-repeat="field in reqFields">
-                        <td style="padding-right: 10px">{{field}}</td>
-                        <td>
-                            <input type="text" name="{{field}}" ng-model="req[field]" style="width: 400px" />
-                        </td>
-                    </tr>
-                </table>
+                <form>
+                    <table style="border: none">
+                        <tr ng-repeat="field in reqFields">
+                            <td style="padding-right: 10px">{{field}}</td>
+                            <td>
+                                <input type="text" name="{{field}}" ng-model="req[field]" style="width: 400px" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
                 <button ng-click="submit()">Submit</button>
             </div>
-            <br/>
+            <br />
             <div style="display: inline-block; text-align: center; vertical-align: top;margin-top: 30px">
                 Jobs list: <button ng-click="update()">Update</button>
                 <div ng-if="list.length==0">No jobs :(</div>

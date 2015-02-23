@@ -56,7 +56,15 @@ namespace MapReduce.Nodes
             {
                 lock (_lock)
                 {
-                    bool ok = TryExecuteTask();
+                    bool ok = true;
+                    try
+                    {
+                        ok = TryExecuteTask();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex.Message);
+                    }
                     if (!ok) Wait();
                 }
             }
