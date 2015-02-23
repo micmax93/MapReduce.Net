@@ -27,6 +27,8 @@ namespace MapReduce.Nodes
             FileStream fs = new FileStream(path, FileMode.Create);
             var data = db.GetOutData(id);
             new Reducer(db.LoadAssembly()).Write(fs, data);
+            fs.Close();
+            db.CloseOutData(id);
             db.JobId = "done";
         }
 

@@ -44,6 +44,7 @@ namespace MapReduce.Nodes
             IMapReduce mapReduce = db.LoadAssembly();
             Mapper mapper = new Mapper(mapReduce);
             mapper.ReadAndMap(input, db.KeyValueDataCollector);
+            input.Close();
             db.FinishMapTask(MapDone);
             return true;
         }

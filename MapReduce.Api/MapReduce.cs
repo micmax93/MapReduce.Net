@@ -36,7 +36,7 @@ namespace MapReduce.Api
 
         public IEnumerable<object> Read(Stream stream)
         {
-            return _inReader.Deserialize(stream).Cast<object>();
+            return _inReader.Deserialize(stream).Select(i => (object)i);
         }
 
         public void DoMap(object input, BinaryCollector binaryCollector)

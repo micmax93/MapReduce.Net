@@ -13,22 +13,23 @@ namespace MapReduce.DataAccess
     {
         public string JobId
         {
-            get { return (string)HashGet("node_" + node, "id"); }
+            get { return HashGet("node_" + node, "id"); }
             set { HashSet("node_" + node, "id", value); }
         }
 
         public byte[] CurrentTask
         {
-            get { return (byte[])HashGet("node_" + node, "task"); }
+            get { return HashGetBytes("node_" + node, "task"); }
             set { HashSet("node_" + node, "task", value); }
         }
+
         public string JobAssembly
         {
             get
             {
                 string id = JobId;
                 if (id == null) return null;
-                return (string)HashGet("job_" + id, "assembly");
+                return HashGet("job_" + id, "assembly");
             }
             set
             {
@@ -44,7 +45,7 @@ namespace MapReduce.DataAccess
             {
                 string id = JobId;
                 if (id == null) return null;
-                return (string)HashGet("job_" + id, "status");
+                return HashGet("job_" + id, "status");
             }
             set
             {
@@ -73,7 +74,7 @@ namespace MapReduce.DataAccess
             {
                 string id = JobId;
                 if (id == null) return null;
-                return (string)HashGet("job_" + id, "outfile");
+                return HashGet("job_" + id, "outfile");
             }
             set
             {
@@ -86,6 +87,7 @@ namespace MapReduce.DataAccess
         public string CreateJob(string user, string jobName, string assemblyFile, string outPath)
         {
             string id = user + "_" + jobName;
+            if(GetJobStatus(id)!=null) throw new DuplicateNameException();
             HashSet("job_" + id, "status", "new");
             HashSet("job_" + id, "assembly", assemblyFile);
             HashSet("job_" + id, "outfile", outPath);
@@ -99,12 +101,13 @@ namespace MapReduce.DataAccess
 
         public IEnumerable<string> ListJobs(string user)
         {
-            return server.Keys(pattern: "job_" + user + "_*").Cast<string>();
+            var jobs = server.Keys(pattern: "job_" + user + "_*").Select(k => (string)k);
+            return jobs.Select(j => j.Replace("job_", ""));
         }
 
         public string GetJobStatus(string id)
         {
-            return (string) HashGet("job_" + id, "status");
+            return HashGet("job_" + id, "status");
 
         }
     }

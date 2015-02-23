@@ -29,16 +29,27 @@ namespace MapReduce.DataAccess
             subscriber = conn.GetSubscriber();
         }
 
-        private object HashGet(RedisKey key, RedisValue field)
+        private string HashGet(RedisKey key, RedisValue field)
         {
             var val = db.HashGet(key, field);
             if (!val.HasValue) return null;
             return val;
         }
-        private void HashSet(RedisKey key, RedisValue field, object value)
+        private byte[] HashGetBytes(RedisKey key, RedisValue field)
+        {
+            var val = db.HashGet(key, field);
+            if (!val.HasValue) return null;
+            return val;
+        }
+        private void HashSet(RedisKey key, RedisValue field, string value)
         {
             if (value == null) db.HashDelete(key, field);
-            else db.HashSet(key, field, (RedisValue)value);
+            else db.HashSet(key, field, value);
+        }
+        private void HashSet(RedisKey key, RedisValue field, byte[] value)
+        {
+            if (value == null) db.HashDelete(key, field);
+            else db.HashSet(key, field, value);
         }
 
         public void Subscribe(string channel, Action<string, string> action)

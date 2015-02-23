@@ -10,8 +10,10 @@ namespace MapReduce.DataAccess
     {
         public void CreateReduceTasks(string id)
         {
-            var keys = server.Keys(pattern: "kv_" + id + "_*");
-            var vals = keys.Cast<byte[]>().Select(key => (RedisValue)key).ToArray();
+            string prefix = "kv_" + id + "_";
+            var keys = server.Keys(pattern: prefix + "*");
+            keys = keys.Select(k => ((string) k).Remove(0, prefix.Length)).Select(k => (RedisKey) k);
+            var vals = keys.Select(k => (byte[])k).Select(key => (RedisValue)key).ToArray();
             db.ListRightPush("reduce_" + id, vals);
             db.HashSet("counters", "reduce_" + id, vals.Length);
             db.ListRightPush("reduce", id);
@@ -29,9 +31,10 @@ namespace MapReduce.DataAccess
 
         public KeyValuePair<byte[], IEnumerable<byte[]>> GetReduceTask()
         {
-            byte[] key = CurrentTask;
-            var vals = db.ListRange(key);
-            return new KeyValuePair<byte[], IEnumerable<byte[]>>(key, vals.Cast<byte[]>());
+            RedisKey key = CurrentTask;
+            string prefix = "kv_" + JobId + "_";
+            var vals = db.ListRange(key.Prepend(prefix));
+            return new KeyValuePair<byte[], IEnumerable<byte[]>>(key, vals.Select(v => (byte[]) v));
         }
 
         public void FinishReduceTask(byte[] result, CompletionTrigger trigger = null)
@@ -39,8 +42,9 @@ namespace MapReduce.DataAccess
             string id = JobId;
             db.ListRightPush("out_" + id, result);
 
-            byte[] taskKey = CurrentTask;
-            db.KeyDelete(taskKey);
+            RedisKey taskKey = CurrentTask;
+            string prefix = "kv_" + JobId + "_";
+            db.KeyDelete(taskKey.Prepend(prefix));
             CurrentTask = null;
 
             var counter = db.HashDecrement("counters", "reduce_" + id);
@@ -52,12 +56,16 @@ namespace MapReduce.DataAccess
 
         public IEnumerable<byte[]> GetOutData(string id)
         {
-            return db.ListRange("out_" + id).Cast<byte[]>();
+            return db.ListRange("out_" + id).Select(v => (byte[])v);
+        }
+        public void CloseOutData(string id)
+        {
+            db.KeyDelete("out_" + id);
         }
 
         public void CloseReduce(string id)
         {
-            HashSet("counters", "reduce_" + id, null);
+            HashSet("counters", "reduce_" + id, (string)null);
             if (db.ListGetByIndex("reduce", 0) == id)
             {
                 string _id = db.ListLeftPop("reduce");

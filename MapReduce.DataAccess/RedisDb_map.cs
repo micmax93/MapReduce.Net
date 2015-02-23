@@ -12,7 +12,7 @@ namespace MapReduce.DataAccess
     {
         public void CreateMapTasks(string id, IEnumerable<string> tasks)
         {
-            var arr = tasks.Cast<RedisValue>().ToArray();
+            var arr = tasks.Select(t => (RedisValue)t).ToArray();
             db.ListRightPush("map_" + id, arr);
             db.HashSet("counters", "map_" + id, arr.Length);
             db.ListRightPush("map", id);
@@ -58,7 +58,7 @@ namespace MapReduce.DataAccess
 
         public void CloseMap(string id)
         {
-            HashSet("counters", "map_" + id, null);
+            HashSet("counters", "map_" + id, (string)null);
             if (db.ListGetByIndex("map", 0) == id)
             {
                 string _id = db.ListLeftPop("map");
