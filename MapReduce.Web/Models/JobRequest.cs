@@ -20,7 +20,7 @@ namespace MapReduce.Web.Models
         {
             try
             {
-                Assembly dll = Assembly.LoadFile(DllPath);
+                Assembly dll = Assembly.Load(File.ReadAllBytes(DllPath));
                 string typeName = Path.GetFileNameWithoutExtension(DllPath);
                 Type type = dll.GetType(typeName);
                 type.GetConstructor(new Type[] {});

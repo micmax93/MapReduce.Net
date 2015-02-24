@@ -58,7 +58,7 @@ namespace MapReduce.DataAccess
         public IMapReduce LoadAssembly(string typeName = null)
         {
             string assemblyFile = JobAssembly;
-            Assembly dll = Assembly.LoadFile(assemblyFile);
+            Assembly dll = Assembly.Load(File.ReadAllBytes(assemblyFile));
             if (typeName == null)
             {
                 typeName = Path.GetFileNameWithoutExtension(assemblyFile);

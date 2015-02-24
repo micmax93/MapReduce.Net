@@ -56,7 +56,7 @@ namespace MapReduce.Nodes
             {
                 lock (_lock)
                 {
-                    bool ok = true;
+                    bool ok = false;
                     try
                     {
                         ok = TryExecuteTask();
